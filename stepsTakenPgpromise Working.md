@@ -16,6 +16,8 @@ CREATE TABLE users (
 ## Stored Procedures
 
 ```sql
+DROP PROCEDURE IF EXISTS create_user;
+
 -- Create stored procedure for creating a new user
 CREATE OR REPLACE PROCEDURE create_user(name VARCHAR, email VARCHAR)
 AS $$
@@ -73,6 +75,13 @@ $$ LANGUAGE plpgsql;
 
 ## 2. Updated Stored Procedures
 ```sql
+-- Drop existing stored procedures
+DROP PROCEDURE IF EXISTS create_user;
+DROP PROCEDURE IF EXISTS get_all_users;
+DROP PROCEDURE IF EXISTS get_user_by_id;
+DROP PROCEDURE IF EXISTS update_user;
+DROP PROCEDURE IF EXISTS delete_user;
+
 -- Create stored procedure for creating a new user
 CREATE OR REPLACE PROCEDURE create_user(name VARCHAR, email VARCHAR, OUT result BOOLEAN)
 AS $$
@@ -86,18 +95,26 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create stored procedure for retrieving all users
-CREATE OR REPLACE PROCEDURE get_all_users()
+CREATE OR REPLACE PROCEDURE get_all_users(OUT result BOOLEAN)
 AS $$
 BEGIN
-    SELECT * FROM users;
+    IF EXISTS (SELECT 1 FROM users) THEN
+        result := TRUE;
+    ELSE
+        result := FALSE;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
 -- Create stored procedure for retrieving a user by ID
-CREATE OR REPLACE PROCEDURE get_user_by_id(user_id INT)
+CREATE OR REPLACE PROCEDURE get_user_by_id(user_id INT, OUT result BOOLEAN)
 AS $$
 BEGIN
-    SELECT * FROM users WHERE id = user_id;
+    IF EXISTS (SELECT 1 FROM users WHERE id = user_id) THEN
+        result := TRUE;
+    ELSE
+        result := FALSE;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
