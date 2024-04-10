@@ -19,116 +19,6 @@ class User {
     }
 
     static async createUser(name, email) {
-        // try {
-        //     // return await db.one('CALL create_user($1, $2)', [name, email]);
-        //     return await db.none('CALL create_user($1, $2)', [name, email]);
-        // } catch (error) {
-        //     console.error('Custom Error executing getAllUsers:', error);
-        //     throw error;
-        // }
-
-        // try {
-        //     const result = await db.one('CALL create_user($1, $2)', [name, email]);
-        //     console.log('Custom Last added row:', result.last_added_row);
-        //     console.log('Custom result:', result);
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-
-        // try {
-        //     // Assuming 'db' is your database connection object
-        //     const result = await db.one('CALL create_user($1, $2, $3)', [name, email, { out: 'last_added_row', type: 'user' }]);
-        //     console.log('Custom Last added row:', result.last_added_row);
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-
-        // try {
-        //     const result = await db.one('CALL create_user($1, $2, $3)', [name, email, {}]);
-        //     console.log('Custom Last added row:', result.last_added_row);
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-        
-        // try {
-        //     const result = await db.one('CALL create_user($1, $2, $3)', [name, email, null]);
-        //     console.log('Last added row:', result.last_added_row);
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-
-        // try {
-        //     const result = await db.one('CALL create_user($1, $2)', [name, email]);
-        //     console.log('Last added row:', result);
-            
-        //     // Split the tuple into individual values
-        //     const [id, name, email] = result.last_added_row;
-        
-        //     // Construct JSON response
-        //     const lastAddedUser = {
-        //         id,
-        //         name,
-        //         email
-        //     };
-        //     console.log('Last added user:', lastAddedUser);
-            
-        //     // Respond with JSON
-        //     res.status(200).json(lastAddedUser);
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-        
-
-        // try {
-        //     const result = await db.one('CALL create_user($1, $2, $3)', [name, email, null]);
-        //     console.log('Last added row:', result);
-            
-        //     // Split the tuple into individual values
-        //     const [id, userName, userEmail] = result.last_added_row;
-        
-        //     // Construct JSON response
-        //     const lastAddedUser = {
-        //         id,
-        //         name: userName,
-        //         email: userEmail
-        //     };
-        //     console.log('Last added user:', lastAddedUser);
-            
-        //     // Respond with JSON
-        //     res.status(200).json(lastAddedUser);
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-
-        
-        // try {
-        //     const result = await db.one('CALL create_user($1, $2, $3)', [name, email, null]);
-        //     console.log('custom result:', result);
-        //     console.log('custom result.Last added row:', result.last_added_row);
-            
-        //     // Split the tuple into individual values
-        //     const [id, userName, userEmail] = result.last_added_row;
-        
-        //     // Construct JSON response
-        //     const lastAddedUser = {
-        //         id,
-        //         name: userName,
-        //         email: userEmail
-        //     };
-        //     console.log('Last added user:', lastAddedUser);
-            
-        //     return lastAddedUser;
-        // } catch (error) {
-        //     console.error('Custom Error executing create_user:', error);
-        //     throw error;
-        // }
-
 
         try {
             const result = await db.one('CALL create_user_data($1, $2, $3, $4, $5)', [name, email, null, null, null]);
@@ -148,42 +38,24 @@ class User {
             throw error;
         }
         
-        
-        
-        
-        
-        
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     static async updateUser(id, name, email) {
         try {
-            return await db.one('CALL update_user($1, $2, $3)', [id, name, email]);
+            const result = await db.one('CALL update_user_data($1, $2, $3, $4, $5)', [id, name, email, null, null]);
+            
+            const updatedUser = {
+                id: result.out_id,
+                user_name: result.out_name,
+                user_email: result.out_email
+            };
+            
+            return updatedUser;
         } catch (error) {
             throw error;
         }
+    
     }
 
     static async deleteUser(id) {
