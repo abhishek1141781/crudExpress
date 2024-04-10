@@ -1,5 +1,5 @@
 ```sql
-DROP PROCEDURE IF EXISTS update_user;
+DROP PROCEDURE IF EXISTS get_user_by_id;
 
 -- functioning create user Stored Procedure
 CREATE OR REPLACE PROCEDURE create_user_data(in_name VARCHAR, in_email VARCHAR, OUT out_id INT, OUT out_name VARCHAR, OUT out_email VARCHAR)
@@ -16,6 +16,14 @@ CREATE OR REPLACE PROCEDURE update_user_data(user_id INT, in_name VARCHAR, in_em
 AS $$
 BEGIN
     UPDATE users SET name = in_name, email = in_email WHERE id = user_id;
+    SELECT name, email INTO out_name, out_email FROM users WHERE id = user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- getuserbyidData
+CREATE OR REPLACE PROCEDURE get_user_by_id_data(user_id INT, OUT out_name VARCHAR, OUT out_email VARCHAR)
+AS $$
+BEGIN
     SELECT name, email INTO out_name, out_email FROM users WHERE id = user_id;
 END;
 $$ LANGUAGE plpgsql;

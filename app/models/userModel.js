@@ -12,10 +12,22 @@ class User {
 
     static async getUserById(id) {
         try {
-            return await db.oneOrNone('CALL get_user_by_id($1)', [id]);
+            const result = await db.oneOrNone('CALL get_user_by_id_data($1, $2, $3)', [id, null, null]);
+
+            if (result.out_name !== null) {
+                const user = {
+                    id: id,
+                    name: result.out_name,
+                    email: result.out_email
+                };
+                return user;
+            } else {
+                return null;
+            }
         } catch (error) {
             throw error;
         }
+    
     }
 
     static async createUser(name, email) {
